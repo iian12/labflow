@@ -1,0 +1,65 @@
+package com.labflow.user.infrastructure.persistence;
+
+import com.labflow.user.domain.UserId;
+import com.labflow.user.domain.Users;
+import com.labflow.user.domain.repository.UserRepository;
+import com.labflow.user.exception.UserNotFoundException;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
+import java.util.Optional;
+
+@Repository
+public class UserRepositoryImpl implements UserRepository {
+
+    private final UserJpaRepository jpaRepository;
+
+    public UserRepositoryImpl(UserJpaRepository jpaRepository) {
+        this.jpaRepository = jpaRepository;
+    }
+
+
+    @Override
+    @Transactional
+    public Users save(Users user) {
+        Objects.requireNonNull(user, "User must not be null");
+
+        UserEntity savedEntity = jpaRepository.save(UserMapper.toEntity(user));
+
+        return UserMapper.toDomain(savedEntity);
+    }
+
+    @Override
+    @Transactional
+    public void update(Users user) {
+        UserEntity entity = jpaRepository.findById(user.getId().value())
+                .orElseThrow(UserNotFoundException::new);
+
+        UserMapper.updateEntity(entity, user);
+    }
+
+    @Override
+    public Optional<Users> findById(UserId userId) {
+
+        if (userId == null) return Optional.empty();
+
+        return jpaRepository.findById(userId.value())
+                .map(UserMapper::toDomain);
+    }
+
+    @Override
+    public Optional<Users> findByEmail(String email) {
+        Objects.requireNonNull(email, "Email must not be null");
+
+        return jpaRepository.findByEmail(email)
+                .map(UserMapper::toDomain);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        Objects.requireNonNull(email, "Email must not be null");
+
+        return jpaRepository.existsByEmail(email);
+    }
+}

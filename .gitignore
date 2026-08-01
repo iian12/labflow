@@ -1,0 +1,237 @@
+# ==================================================
+# OS
+# ==================================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+
+# ==================================================
+# IDE / Editor
+# ==================================================
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+backend/labflow/src/main/resources/application.properties
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+
+.project
+.classpath
+.settings/
+
+*.swp
+*.swo
+*~
+.history/
+
+
+# ==================================================
+# Environment variables / Secrets
+# ==================================================
+.env
+.env.*
+!.env.example
+!.env.template
+
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+
+secrets/
+credentials/
+
+
+# ==================================================
+# Logs
+# ==================================================
+logs/
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# ==================================================
+# Spring Boot / Java
+# ==================================================
+**/build/
+**/target/
+**/out/
+
+*.class
+*.jar
+*.war
+*.ear
+
+.gradle/
+**/.gradle/
+
+bin/
+.factorypath
+
+hs_err_pid*
+replay_pid*
+
+
+# ==================================================
+# React / Node.js
+# ==================================================
+**/node_modules/
+
+**/dist/
+**/.next/
+**/.nuxt/
+**/.vite/
+**/.parcel-cache/
+**/.turbo/
+**/.cache/
+
+**/coverage/
+
+*.tsbuildinfo
+
+# React/Vite local environment
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+
+# ==================================================
+# Python SDK
+# ==================================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python package build outputs
+**/dist/
+**/build/
+*.egg-info/
+.eggs/
+*.egg
+
+# Test / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+
+# Type checking / lint
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Python version manager
+.python-version
+
+
+# ==================================================
+# Local databases / Runtime files
+# ==================================================
+*.db
+*.sqlite
+*.sqlite3
+
+*.pid
+*.pid.lock
+
+tmp/
+temp/
+
+
+# ==================================================
+# Docker local overrides
+# ==================================================
+docker-compose.override.yml
+
+# 로컬 볼륨을 프로젝트 내부에 저장하는 경우
+docker-data/
+volumes/
+
+
+# ==================================================
+# Generated experiment data
+# ==================================================
+artifacts/
+checkpoints/
+runs/
+experiments/
+outputs/
+
+*.ckpt
+*.pth
+*.pt
+*.onnx
+*.h5
+
+
+# ==================================================
+# Uploaded files / Local storage
+# ==================================================
+uploads/
+storage/
+
+
+# ==================================================
+# Compressed / Temporary files
+# ==================================================
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.tmp
+*.bak
