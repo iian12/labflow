@@ -2,7 +2,7 @@ package com.labflow.user.infrastructure.security;
 
 import com.labflow.auth.infrastructure.security.LoginUserDetails;
 import com.labflow.user.domain.repository.UserRepository;
-import com.labflow.user.domain.Users;
+import com.labflow.user.domain.User;
 import com.labflow.user.exception.UserNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Users user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         return LoginUserDetails.from(user);
     }

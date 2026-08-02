@@ -1,7 +1,7 @@
 package com.labflow.user.infrastructure.persistence;
 
 import com.labflow.user.domain.UserId;
-import com.labflow.user.domain.Users;
+import com.labflow.user.domain.User;
 import com.labflow.user.domain.repository.UserRepository;
 import com.labflow.user.exception.UserNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public Users save(Users user) {
+    public User save(User user) {
         Objects.requireNonNull(user, "User must not be null");
 
         UserEntity savedEntity = jpaRepository.save(UserMapper.toEntity(user));
@@ -32,7 +32,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public void update(Users user) {
+    public void update(User user) {
         UserEntity entity = jpaRepository.findById(user.getId().value())
                 .orElseThrow(UserNotFoundException::new);
 
@@ -40,7 +40,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<Users> findById(UserId userId) {
+    public Optional<User> findById(UserId userId) {
 
         if (userId == null) return Optional.empty();
 
@@ -49,7 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<Users> findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         Objects.requireNonNull(email, "Email must not be null");
 
         return jpaRepository.findByEmail(email)

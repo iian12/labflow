@@ -2,7 +2,7 @@ package com.labflow.user.application;
 
 import com.labflow.user.domain.UserId;
 import com.labflow.user.domain.AccountStatus;
-import com.labflow.user.domain.Users;
+import com.labflow.user.domain.User;
 import com.labflow.user.domain.repository.UserRepository;
 import com.labflow.user.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class UserService {
                         + TransactionSynchronizationManager
                         .isCurrentTransactionReadOnly()
         );
-        Users user = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         user.activate();

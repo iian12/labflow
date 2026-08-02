@@ -5,7 +5,7 @@ import com.labflow.auth.domain.*;
 import com.labflow.auth.domain.exception.InvalidRefreshTokenException;
 import com.labflow.global.id.IdGenerator;
 import com.labflow.user.domain.repository.UserRepository;
-import com.labflow.user.domain.Users;
+import com.labflow.user.domain.User;
 import com.labflow.user.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +56,7 @@ public class TokenRefreshService {
 
         currentToken.validateUsable(now);
 
-        Users user = userRepository.findById(currentToken.getUserId())
+        User user = userRepository.findById(currentToken.getUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         currentToken.revoke(now);

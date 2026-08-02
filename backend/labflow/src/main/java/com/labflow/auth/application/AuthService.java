@@ -8,7 +8,7 @@ import com.labflow.global.id.IdGenerator;
 import com.labflow.auth.infrastructure.security.LoginUserDetails;
 import com.labflow.user.domain.UserId;
 import com.labflow.user.domain.repository.UserRepository;
-import com.labflow.user.domain.Users;
+import com.labflow.user.domain.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -66,14 +66,14 @@ public class AuthService {
 
         // Instant now = clock.instant();
 
-        Users user = Users.createPendingUser(
+        User user = User.createPendingUser(
                 userId,
                 command.email(),
                 passwordEncoder.encode(command.password()),
                 command.name()
         );
 
-        Users savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(user);
         return savedUser.getId();
     }
 

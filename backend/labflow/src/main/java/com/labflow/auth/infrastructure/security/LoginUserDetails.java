@@ -2,7 +2,7 @@ package com.labflow.auth.infrastructure.security;
 
 import com.labflow.user.domain.UserId;
 import com.labflow.user.domain.Role;
-import com.labflow.user.domain.Users;
+import com.labflow.user.domain.User;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +18,7 @@ public record LoginUserDetails(
         Role role
 ) implements UserDetails {
 
-    public static LoginUserDetails from(Users user) {
+    public static LoginUserDetails from(User user) {
         return new LoginUserDetails(
                 user.getId(),
                 user.getEmail(),

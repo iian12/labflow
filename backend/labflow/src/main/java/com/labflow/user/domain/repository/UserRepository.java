@@ -1,19 +1,19 @@
 package com.labflow.user.domain.repository;
 
 import com.labflow.user.domain.UserId;
-import com.labflow.user.domain.Users;
+import com.labflow.user.domain.User;
 
 import java.util.Optional;
 
 public interface UserRepository {
 
-    Users save(Users user);
+    User save(User user);
 
-    void update(Users user);
+    void update(User user);
 
-    Optional<Users> findById(UserId userId);
+    Optional<User> findById(UserId userId);
 
-    Optional<Users> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     boolean existsByEmail(String email);
 }

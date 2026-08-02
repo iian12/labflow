@@ -3,7 +3,7 @@ package com.labflow.user.domain;
 import lombok.Getter;
 
 @Getter
-public class Users {
+public class User {
 
     private final UserId id;
     private final String email;
@@ -12,7 +12,7 @@ public class Users {
     private Role role;
     private AccountStatus accountStatus;
 
-    public Users(UserId id, String email, String encodedPassword, String name, Role role, AccountStatus accountStatus) {
+    public User(UserId id, String email, String encodedPassword, String name, Role role, AccountStatus accountStatus) {
         this.id = id;
         this.email = email;
         this.encodedPassword = encodedPassword;
@@ -21,12 +21,12 @@ public class Users {
         this.accountStatus = accountStatus;
     }
 
-    public static Users createPendingUser(UserId id, String email, String encodedPassword, String name) {
-        return new Users(id, email, encodedPassword, name, Role.USER, AccountStatus.PENDING_VERIFICATION);
+    public static User createPendingUser(UserId id, String email, String encodedPassword, String name) {
+        return new User(id, email, encodedPassword, name, Role.USER, AccountStatus.PENDING_VERIFICATION);
     }
 
-    public static Users restore(UserId id, String email, String encodedPassword, String name, Role role, AccountStatus accountStatus) {
-        return new Users(id, email, encodedPassword, name, role, accountStatus);
+    public static User restore(UserId id, String email, String encodedPassword, String name, Role role, AccountStatus accountStatus) {
+        return new User(id, email, encodedPassword, name, role, accountStatus);
     }
 
     public void update(String encodedPassword, String name, Role role) {

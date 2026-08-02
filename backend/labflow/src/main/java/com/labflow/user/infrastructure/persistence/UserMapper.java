@@ -2,7 +2,7 @@ package com.labflow.user.infrastructure.persistence;
 
 import com.labflow.user.domain.UserId;
 import com.labflow.user.domain.AccountStatus;
-import com.labflow.user.domain.Users;
+import com.labflow.user.domain.User;
 
 public class UserMapper {
     private UserMapper() {
@@ -11,7 +11,7 @@ public class UserMapper {
 
 
     // 도메인 -> 엔티티 변환용 팩토리 메서드
-    public static UserEntity toEntity(Users domain) {
+    public static UserEntity toEntity(User domain) {
         return UserEntity.builder()
                 .id(domain.getId().value())
                 .encodedPassword(domain.getEncodedPassword())
@@ -23,8 +23,8 @@ public class UserMapper {
     }
 
     // 엔티티 -> 도메인 변환용 팩토리 메서드
-    public static Users toDomain(UserEntity entity) {
-        return Users.restore(
+    public static User toDomain(UserEntity entity) {
+        return User.restore(
                 UserId.of(entity.getId()),
                 entity.getEmail(),
                 entity.getEncodedPassword(),
@@ -34,7 +34,7 @@ public class UserMapper {
         );
     }
 
-    public static void updateEntity(UserEntity entity, Users users) {
+    public static void updateEntity(UserEntity entity, User user) {
         entity.updateAccountStatus(AccountStatus.ACTIVE);
     }
 }
