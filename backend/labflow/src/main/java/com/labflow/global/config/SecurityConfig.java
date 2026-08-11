@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
@@ -54,7 +55,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(csrfTokenRepository)
                         .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
-                        .ignoringRequestMatchers("/api/v1/auth/sign-up", "/api/v1/auth/login"))
+                        // 매 요청시마다 CSRF 토큰 재발급 방지
+                        .sessionAuthenticationStrategy(new NullAuthenticatedSessionStrategy())
+                        .ignoringRequestMatchers("/api/v1/auth/sign-up", "/api/v1/auth/login", "/api/v1/sdk/test"))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -75,7 +78,8 @@ public class SecurityConfig {
                                 "/api/v1/auth/login",
                                 "/api/v1/auth/refresh",
                                 "/api/v1/auth/logout",
-                                "/api/v1/auth/csrf"
+                                "/api/v1/auth/csrf",
+                                "/api/v1/sdk/test"
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/email-verify/**").permitAll()
                         .anyRequest().authenticated())

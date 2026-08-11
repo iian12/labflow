@@ -21,18 +21,6 @@ public class UserService {
 
     @Transactional
     public void updateAccountStatus(UserId userId, AccountStatus newStatus) {
-
-        System.out.println(
-                "transaction active: "
-                        + TransactionSynchronizationManager
-                        .isActualTransactionActive()
-        );
-
-        System.out.println(
-                "read only: "
-                        + TransactionSynchronizationManager
-                        .isCurrentTransactionReadOnly()
-        );
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
