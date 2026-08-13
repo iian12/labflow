@@ -72,9 +72,8 @@ class UserAccountStatusQueryTest {
 
         UserId userId = UserId.of(entity.getId());
 
-        userService.updateAccountStatus(
-                userId,
-                AccountStatus.ACTIVE
+        userService.activateAccountStatus(
+                userId
         );
 
         long entityLoadCount =

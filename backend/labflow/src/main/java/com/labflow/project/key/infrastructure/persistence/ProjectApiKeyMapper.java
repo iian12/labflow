@@ -1,5 +1,7 @@
-package com.labflow.project.key;
+package com.labflow.project.key.infrastructure.persistence;
 
+import com.labflow.project.key.domain.ProjectApiKey;
+import com.labflow.project.key.domain.ProjectApiKeyId;
 import com.labflow.project.project.ProjectId;
 import com.labflow.user.domain.UserId;
 import lombok.Getter;
@@ -19,10 +21,8 @@ public class ProjectApiKeyMapper {
                 .name(apiKey.getName())
                 .keyPrefix(apiKey.getKeyPrefix())
                 .keyHash(apiKey.getKeyHash())
-                .scopes(apiKey.getScopes())
                 .status(apiKey.getStatus())
                 .createdAt(apiKey.getCreatedAt())
-                .expiresAt(apiKey.getExpiresAt())
                 .revokedAt(apiKey.getRevokedAt())
                 .lastUsedAt(apiKey.getLastUsedAt())
                 .build();
@@ -36,10 +36,8 @@ public class ProjectApiKeyMapper {
                 entity.getName(),
                 entity.getKeyPrefix(),
                 entity.getKeyHash(),
-                entity.getScopes(),
                 entity.getStatus(),
                 entity.getCreatedAt(),
-                entity.getExpiresAt(),
                 entity.getRevokedAt(),
                 entity.getLastUsedAt()
         );

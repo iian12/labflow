@@ -1,0 +1,6 @@
+package com.labflow.sdk.presentation;
+
+import java.util.Map;
+
+public record RunParameterRequest(Map<String, String> parameters) {
+}

@@ -1,4 +1,4 @@
-package com.labflow.project.key;
+package com.labflow.project.key.domain;
 
 public enum ProjectApiKeyScope {
     RUN_WRITE,

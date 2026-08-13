@@ -1,6 +1,7 @@
-package com.labflow.project.key;
+package com.labflow.project.key.infrastructure.persistence;
 
 import com.labflow.global.id.AssignedIdEntity;
+import com.labflow.project.key.domain.ProjectApiKeyStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.util.Set;
 
 @Getter
 @Entity
@@ -24,27 +24,21 @@ public class ProjectApiKeyEntity extends AssignedIdEntity {
     private String keyHash;
 
     @Enumerated(EnumType.STRING)
-    private Set<ProjectApiKeyScope> scopes;
-
-    @Enumerated(EnumType.STRING)
     private ProjectApiKeyStatus status;
     private Instant createdAt;
-    private Instant expiresAt;
     private Instant revokedAt;
     private Instant lastUsedAt;
 
     @Builder
-    public ProjectApiKeyEntity(Long id, Long projectId, Long createdBy, String name, String keyPrefix, String keyHash, Set<ProjectApiKeyScope> scopes, ProjectApiKeyStatus status, Instant createdAt, Instant expiresAt, Instant revokedAt, Instant lastUsedAt) {
+    public ProjectApiKeyEntity(Long id, Long projectId, Long createdBy, String name, String keyPrefix, String keyHash, ProjectApiKeyStatus status, Instant createdAt, Instant revokedAt, Instant lastUsedAt) {
         this.id = id;
         this.projectId = projectId;
         this.createdBy = createdBy;
         this.name = name;
         this.keyPrefix = keyPrefix;
         this.keyHash = keyHash;
-        this.scopes = scopes;
         this.status = status;
         this.createdAt = createdAt;
-        this.expiresAt = expiresAt;
         this.revokedAt = revokedAt;
         this.lastUsedAt = lastUsedAt;
     }

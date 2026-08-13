@@ -19,7 +19,6 @@ public class UserRepositoryImpl implements UserRepository {
         this.jpaRepository = jpaRepository;
     }
 
-
     @Override
     @Transactional
     public User save(User user) {

@@ -1,5 +1,6 @@
-package com.labflow.project.key;
+package com.labflow.project.key.util;
 
+import com.labflow.project.key.application.GeneratedProjectApiKey;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;

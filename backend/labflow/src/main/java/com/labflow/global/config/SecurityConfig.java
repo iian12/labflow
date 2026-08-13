@@ -4,6 +4,7 @@ import com.labflow.auth.infrastructure.persistence.JwtAuthenticationFilter;
 import com.labflow.global.handler.CustomAccessDeniedHandler;
 import com.labflow.global.handler.CustomAuthenticationEntryPoint;
 import com.labflow.global.handler.SpaCsrfTokenRequestHandler;
+import com.labflow.project.key.infrastructure.security.ProjectApiKeyAuthenticationFilter;
 import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,13 +30,16 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final ProjectApiKeyAuthenticationFilter projectApiKeyAuthenticationFilter;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
                           CustomAuthenticationEntryPoint authenticationEntryPoint,
-                          CustomAccessDeniedHandler customAccessDeniedHandler) {
+                          CustomAccessDeniedHandler customAccessDeniedHandler,
+                          ProjectApiKeyAuthenticationFilter projectApiKeyAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
+        this.projectApiKeyAuthenticationFilter = projectApiKeyAuthenticationFilter;
     }
 
     @Bean
@@ -57,7 +61,7 @@ public class SecurityConfig {
                         .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
                         // 매 요청시마다 CSRF 토큰 재발급 방지
                         .sessionAuthenticationStrategy(new NullAuthenticatedSessionStrategy())
-                        .ignoringRequestMatchers("/api/v1/auth/sign-up", "/api/v1/auth/login", "/api/v1/sdk/test"))
+                        .ignoringRequestMatchers("/api/v1/auth/sign-up", "/api/v1/auth/login"))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -78,11 +82,11 @@ public class SecurityConfig {
                                 "/api/v1/auth/login",
                                 "/api/v1/auth/refresh",
                                 "/api/v1/auth/logout",
-                                "/api/v1/auth/csrf",
-                                "/api/v1/sdk/test"
+                                "/api/v1/auth/csrf"
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/email-verify/**").permitAll()
                         .anyRequest().authenticated())
+                .addFilterBefore(projectApiKeyAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

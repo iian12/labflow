@@ -1,7 +1,13 @@
-package com.labflow.project.key;
+package com.labflow.project.key.application;
 
 import com.labflow.global.id.IdGenerator;
-import com.labflow.project.project.Project;
+import com.labflow.project.key.domain.ProjectApiKey;
+import com.labflow.project.key.domain.ProjectApiKeyId;
+import com.labflow.project.key.domain.ProjectApiKeyStatus;
+import com.labflow.project.key.domain.repository.ProjectApiKeyRepository;
+import com.labflow.project.key.presentation.IssueProjectApiKeyRequest;
+import com.labflow.project.key.util.ProjectApiKeyGenerator;
+import com.labflow.project.key.util.ProjectApiKeyHasher;
 import com.labflow.project.project.ProjectId;
 import com.labflow.project.project.ProjectRepository;
 import com.labflow.user.domain.UserId;
@@ -19,23 +25,25 @@ public class ProjectApiKeyService {
     private final Clock clock;
     private final IdGenerator idGenerator;
     private final ProjectApiKeyHasher projectApiKeyHasher;
+    private final ProjectApiKeyRepository projectApiKeyRepository;
 
-    public ProjectApiKeyService(ProjectRepository projectRepository, ProjectApiKeyGenerator projectApiKeyGenerator, Clock clock, IdGenerator idGenerator, ProjectApiKeyHasher projectApiKeyHasher) {
+    public ProjectApiKeyService(ProjectRepository projectRepository, ProjectApiKeyGenerator projectApiKeyGenerator, Clock clock, IdGenerator idGenerator, ProjectApiKeyHasher projectApiKeyHasher, ProjectApiKeyRepository projectApiKeyRepository) {
         this.projectRepository = projectRepository;
         this.projectApiKeyGenerator = projectApiKeyGenerator;
         this.clock = clock;
         this.idGenerator = idGenerator;
         this.projectApiKeyHasher = projectApiKeyHasher;
+        this.projectApiKeyRepository = projectApiKeyRepository;
     }
 
     @Transactional
     public IssueProjectApiKeyResult issue(
             UserId requesterId,
             ProjectId projectId,
-            IssueProjectApiKeyCommand command
+            IssueProjectApiKeyRequest request
     ) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Project not found"));
+        if (projectRepository.findById(projectId).isEmpty())
+            throw new IllegalArgumentException("Project not found");
 
         GeneratedProjectApiKey generated = projectApiKeyGenerator.generate();
 
@@ -45,22 +53,20 @@ public class ProjectApiKeyService {
                 ProjectApiKeyId.of(idGenerator.nextId()),
                 projectId,
                 requesterId,
-                command.name(),
+                request.name(),
                 generated.keyPrefix(),
                 projectApiKeyHasher.hash(generated.rawKey()),
-                command.scopes(),
                 ProjectApiKeyStatus.ACTIVE,
                 now,
-                command.expiresAt(),
                 null,
                 now
         );
 
+        projectApiKeyRepository.save(apiKey);
+
         return new IssueProjectApiKeyResult(
                 apiKey.getId(),
-                generated.rawKey(),
-                apiKey.getKeyPrefix(),
-                apiKey.getExpiresAt()
+                generated.rawKey()
         );
     }
 }

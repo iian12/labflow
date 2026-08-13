@@ -1,4 +1,4 @@
-package com.labflow.project.key;
+package com.labflow.project.key.util;
 
 import org.springframework.stereotype.Component;
 
