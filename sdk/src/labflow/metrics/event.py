@@ -5,22 +5,20 @@ from typing import Any
 
 @dataclass(frozen=True)
 class MetricEvent:
-    # 사용자가 관리하는 epoch
-    epoch: int
 
-    # Run 전체에서 증가하는 global step
-    step: int
+    # 사용자가 전달한 Epoch
+    epoch: int | None
 
-    # Run 시작 후 경과 시간 (seconds)
+    # 사용자가 전달한 Step
+    step: int | None
+
+    # Run 시작 이후 경과 시간
     elapsed_time: float
 
-    # 실제 Metric 값
+    # 사용자가 자유롭게 전달하는 Metric
     metrics: dict[str, str]
 
-    # SDK가 자동 수집한 시스템 정보
-    system: dict[str, Any]
-
-    # Metric 기록 시작 시각
+    # Metric 측정 시각
     recorded_at: datetime
 
     def to_payload(self) -> dict[str, Any]:
@@ -29,8 +27,7 @@ class MetricEvent:
             "step": self.step,
             "elapsedTime": self.elapsed_time,
             "metrics": self.metrics,
-            "system": self.system,
-            "recordedAt": self.recorded_at,
+            "recordedAt": self.recorded_at.isoformat(),
         }
 
     @staticmethod
