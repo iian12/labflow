@@ -61,7 +61,7 @@ public class SecurityConfig {
                         .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
                         // 매 요청시마다 CSRF 토큰 재발급 방지
                         .sessionAuthenticationStrategy(new NullAuthenticatedSessionStrategy())
-                        .ignoringRequestMatchers("/api/v1/auth/sign-up", "/api/v1/auth/login"))
+                        .ignoringRequestMatchers("/api/v1/auth/sign-up", "/api/v1/auth/login", "/api/v1/sdk/**"))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)

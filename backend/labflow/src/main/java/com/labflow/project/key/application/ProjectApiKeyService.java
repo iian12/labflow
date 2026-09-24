@@ -10,6 +10,8 @@ import com.labflow.project.key.util.ProjectApiKeyGenerator;
 import com.labflow.project.key.util.ProjectApiKeyHasher;
 import com.labflow.project.project.ProjectId;
 import com.labflow.project.project.ProjectRepository;
+import com.labflow.project.project.Project;
+import org.springframework.security.access.AccessDeniedException;
 import com.labflow.user.domain.UserId;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -42,8 +44,11 @@ public class ProjectApiKeyService {
             ProjectId projectId,
             IssueProjectApiKeyRequest request
     ) {
-        if (projectRepository.findById(projectId).isEmpty())
-            throw new IllegalArgumentException("Project not found");
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Project not found"));
+        if (!project.getCreatedBy().equals(requesterId)) {
+            throw new AccessDeniedException("Only the project owner can issue API keys");
+        }
 
         GeneratedProjectApiKey generated = projectApiKeyGenerator.generate();
 

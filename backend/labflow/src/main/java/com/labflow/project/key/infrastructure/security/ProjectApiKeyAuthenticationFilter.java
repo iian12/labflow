@@ -33,7 +33,9 @@ public class ProjectApiKeyAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return !request.getRequestURI().startsWith("/api/v1/sdk");
+        String path = request.getRequestURI().substring(request.getContextPath().length());
+        return "OPTIONS".equals(request.getMethod())
+                || !(path.equals("/api/v1/sdk") || path.startsWith("/api/v1/sdk/"));
     }
 
     @Override
@@ -54,12 +56,13 @@ public class ProjectApiKeyAuthenticationFilter extends OncePerRequestFilter {
             SecurityContext context = SecurityContextHolder.createEmptyContext();
 
             context.setAuthentication(authentication);
-
-            filterChain.doFilter(request, response);
+            SecurityContextHolder.setContext(context);
         } catch (AuthenticationException e) {
             SecurityContextHolder.clearContext();
             authenticationEntryPoint.commence(request, response, e);
+            return;
         }
+        filterChain.doFilter(request, response);
     }
 
     private String resolveApiKey(

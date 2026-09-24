@@ -1,6 +1,8 @@
 package com.labflow.sdk;
 
 import lombok.extern.slf4j.Slf4j;
+import com.labflow.project.key.domain.ProjectApiKeyPrincipal;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,18 @@ import java.util.concurrent.atomic.AtomicLong;
 public class SdkTestController {
 
     private final AtomicLong runIdGenerator = new AtomicLong(1000);
+
+    /** Returns the verified identity without exposing the API key itself. */
+    @GetMapping("/auth-check")
+    public ResponseEntity<Map<String, Long>> authCheck(
+            @AuthenticationPrincipal ProjectApiKeyPrincipal principal
+    ) {
+        return ResponseEntity.ok(Map.of(
+                "projectId", principal.projectId().value(),
+                "apiKeyId", principal.apiKeyId().value(),
+                "createdBy", principal.createdBy().value()
+        ));
+    }
 
     /*
     * Run 생성 테스트
@@ -232,7 +246,6 @@ public class SdkTestController {
 
         return ResponseEntity.noContent().build();
     }
-
 
     /**
      * Run 실패 테스트

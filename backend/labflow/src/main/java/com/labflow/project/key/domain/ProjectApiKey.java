@@ -49,10 +49,11 @@ public class ProjectApiKey {
         }
 
         this.revokedAt = revokedAt;
+        this.status = ProjectApiKeyStatus.REVOKED;
     }
 
     public void validateUsable() {
-        if (status != ProjectApiKeyStatus.ACTIVE) {
+        if (status != ProjectApiKeyStatus.ACTIVE || isRevoked()) {
             throw new IllegalStateException("API key is not active");
         }
     }
